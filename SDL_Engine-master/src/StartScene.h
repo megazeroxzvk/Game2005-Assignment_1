@@ -24,9 +24,17 @@ private:
 	Label* m_pStartLabel{};
 	Label* m_pInstructionsLabel{};
 
+	//Assignment 1:
+	//Labels
+	Label* m_pTeamMember1{};
+	Label* m_pTeamMember2{};
+	//Buttons
+	Button* m_pStartButton;
+
 	Ship* m_pShip{};
 
-	Button* m_pStartButton;
+	Button* m_pStartButton1;
+
 };
 
 #endif /* defined (__START_SCENE__) */
