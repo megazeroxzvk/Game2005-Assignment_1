@@ -102,15 +102,15 @@ void ThermalDetonator::update()
 	else
 	{
 		position = getTransform()->position;
-		//std::cout << "speed.y = " << getRigidBody()->velocity.y << std::endl;
+		std::cout << "speed.y = " << getRigidBody()->velocity.y << std::endl;
 
 		// better way to do??
 		
 		//replace 9.81 with gravity factor.
-		//getRigidBody()->velocity.y += gravity * deltaTime;
-		//getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * deltaTime;
-		//position.y += getRigidBody()->velocity.y * deltaTime;
-		//position.x += getRigidBody()->velocity.x * deltaTime;
+		getRigidBody()->velocity.y += gravity * deltaTime;
+		getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * deltaTime;
+		position.y += getRigidBody()->velocity.y * deltaTime;
+		position.x += getRigidBody()->velocity.x * deltaTime;
 		getTransform()->position = position;
 	}
 
