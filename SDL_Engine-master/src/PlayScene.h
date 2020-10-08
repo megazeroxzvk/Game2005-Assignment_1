@@ -47,7 +47,11 @@ private:
 	Label* m_pInstructionsLabel;
 
 	//Labels for showing current information-
-	
+	Label* m_pStormTroopersLocation;
+	Label* m_pAngle;
+	Label* m_pSpeed;
+	Label* m_pRange;
+	Label* m_pTimeRequired;
 
 	// Background
 	Background* m_pBackground;

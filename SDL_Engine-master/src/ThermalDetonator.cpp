@@ -91,7 +91,7 @@ void ThermalDetonator::update()
 	//An object that gets thrown off with a velocity, gravity and at a certain angle,
 	//will come to the that same x-axis level and at the same speed due to
 	//the acceleration and deceleration that the object gets.
-	//Hence the detonator lands at the stormtroopers when the landing velocity becomes equal to the starting velocity
+	//Hence the detonator lands at the stormtroopers the landing velocity is equal to the starting velocity
 	//And when it lands, booom!
 
 	if (getRigidBody()->velocity.y > m_speed * sin(m_angle))

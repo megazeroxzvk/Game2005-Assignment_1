@@ -29,6 +29,7 @@ private:
 	//Labels
 	Label* m_pTeamMember1{};
 	Label* m_pTeamMember2{};
+	Label* m_pAngryWookie{};
 
 	Background* m_pBackground;
 	
