@@ -25,6 +25,10 @@ public:
 	// setters
 	void setSpriteSheet(SpriteSheet* sprite_sheet);
 	void setAnimation(const Animation& animation);
+
+protected:
+	const float deltaTime = (1.0f / 60.f);
+	float gravity = 9.8f;
 private:
 	// private utility functions
 	bool m_animationExists(const std::string& id);

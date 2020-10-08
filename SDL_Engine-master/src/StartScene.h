@@ -2,6 +2,7 @@
 #ifndef __START_SCENE__
 #define __START_SCENE__
 
+#include "Background.h"
 #include "Scene.h"
 #include "Label.h"
 #include "ship.h"
@@ -28,10 +29,11 @@ private:
 	//Labels
 	Label* m_pTeamMember1{};
 	Label* m_pTeamMember2{};
+
+	Background* m_pBackground;
+	
 	//Buttons
 	Button* m_pStartButton;
-
-	Ship* m_pShip{};
 
 	Button* m_pStartButton1;
 

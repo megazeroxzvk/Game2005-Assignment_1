@@ -3,9 +3,9 @@
 #define __GAME_OBJECT_TYPE__
 enum GameObjectType {
 	NONE = -1,
-	SHIP,
-	TARGET,
 	PLAYER,
+	TARGET,
+	SHIP,
 	PLANE,
 	START_BUTTON,
 	RESTART_BUTTON,
