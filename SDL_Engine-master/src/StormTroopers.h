@@ -16,9 +16,10 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	float getResetPosition();
 private:
 	
-	
+	float m_resetPosition;
 };
 
 #endif /* defined (__STORMTROOPERS__) */

@@ -28,7 +28,7 @@ public:
 
 protected:
 	const float deltaTime = (1.0f / 60.f);
-	float gravity = 9.8f;
+	glm::vec2 gravity = { 0,9.8f };
 private:
 	// private utility functions
 	bool m_animationExists(const std::string& id);

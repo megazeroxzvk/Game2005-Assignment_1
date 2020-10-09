@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include <math.h>  
 
 // required for IMGUI
 #include "imgui.h"
@@ -29,6 +30,14 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+	std::cout << "Distance Covered = " << m_pThermalDetonator->getDistance() << std::endl;
+	std::cout << "Time = " << m_pThermalDetonator->getTime() << std::endl;
+	m_pSpeedLabel->setText("Y Velocity = " + std::to_string(fabs(m_pThermalDetonator->getRigidBody()->velocity.y)));
+	m_pAngleLabel->setText("Angle = " + std::to_string(m_pThermalDetonator->getAngle()));
+	m_pTimeLabel->setText("Time = " + std::to_string(m_pThermalDetonator->getTime()));
+	m_pDistanceLabel->setText("Distance = " + std::to_string(m_pThermalDetonator->getDistance()));
+	m_pEnemyLocationLabel->setText("Enemy Location = " + std::to_string(m_pStormTroopers->getTransform()->position.x));
+	m_pLandingPositionLabel->setText("Landing Location = " + std::to_string(m_pThermalDetonator->getLandingLocation()));
 }
 
 void PlayScene::clean()
@@ -133,7 +142,7 @@ void PlayScene::start()
 
 	//Thermal Detonator
 	m_pThermalDetonator = new ThermalDetonator();
-	m_pThermalDetonator->setAngle(15.980f);
+	m_pThermalDetonator->setAngle(15.88963282f);
 	m_pThermalDetonator->setSpeed(95.0f);
 	addChild(m_pThermalDetonator);
 	
@@ -153,11 +162,15 @@ void PlayScene::start()
 
 	// Throw Button
 	m_pThrowButton = new Button("../Assets/textures/throwbutton.png", "throwbutton", BACK_BUTTON);
-	m_pThrowButton->getTransform()->position = glm::vec2(300.0f, 200.0f);
+	m_pThrowButton->getTransform()->position = glm::vec2(700.0f, 150.0f);
 	m_pThrowButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pThrowButton->setActive(false);
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		//TheGame::Instance()->changeSceneState(START_SCENE);
+		m_pThermalDetonator->m_kickoff = true;
+		m_pThermalDetonator->setPosition(m_pThermalDetonator->getResetPositon());
+		m_pThermalDetonator->setAngle(m_pThermalDetonator->getAngle());
+		m_pThermalDetonator->setSpeed(m_pThermalDetonator->getSpeed());	
 	});
 
 	m_pThrowButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -173,11 +186,17 @@ void PlayScene::start()
 
 	// Reset Button
 	m_pResetButton = new Button("../Assets/textures/resetbutton.png", "resetbutton", NEXT_BUTTON);
-	m_pResetButton->getTransform()->position = glm::vec2(500.0f, 200.0f);
+	m_pResetButton->getTransform()->position = glm::vec2(700.0f, 210.0f);
 	m_pResetButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pResetButton->setActive(false);
-		TheGame::Instance()->changeSceneState(END_SCENE);
+		//TheGame::Instance()->changeSceneState(END_SCENE);
+		m_pThermalDetonator->m_kickoff = false;
+		m_pThermalDetonator->setAngle(m_pThermalDetonator->getResetAngle());
+		m_pThermalDetonator->setPosition(m_pThermalDetonator->getResetPositon());
+		m_pThermalDetonator->setSpeed(m_pThermalDetonator->getResetSpeed());
+		m_pStormTroopers->getTransform()->position.x = m_pStormTroopers->getResetPosition();
+		
 	});
 
 	m_pResetButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -195,8 +214,31 @@ void PlayScene::start()
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
-
 	addChild(m_pInstructionsLabel);
+
+	m_pSpeedLabel = new Label("", "digi",20,{0,0,0,255});
+	m_pSpeedLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.55f, 30.0f);
+	addChild(m_pSpeedLabel);
+
+	m_pAngleLabel = new Label("", "digi", 20, { 0,0,0,255 });
+	m_pAngleLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f, 30.0f);
+	addChild(m_pAngleLabel);
+
+	m_pTimeLabel = new Label("", "digi", 20, { 0,0,0,255 });
+	m_pTimeLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.55f, 60.0f);
+	addChild(m_pTimeLabel);
+
+	m_pLandingPositionLabel = new Label("", "digi", 20, { 0,0,0,255 });
+	m_pLandingPositionLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f, 60.0f);
+	addChild(m_pLandingPositionLabel);
+
+	m_pEnemyLocationLabel = new Label("", "digi", 20, { 0,0,0,255 });
+	m_pEnemyLocationLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f, 90.0f);
+	addChild(m_pEnemyLocationLabel);
+
+	m_pDistanceLabel = new Label("", "digi", 20, { 0,0,0,255 });
+	m_pDistanceLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.55f, 90.0f);
+	addChild(m_pDistanceLabel);
 }
 
 void PlayScene::GUI_Function() const
@@ -216,14 +258,36 @@ void PlayScene::GUI_Function() const
 
 	ImGui::Separator();
 
-	static float float3[3] = { 0.0f, 1.0f, 1.5f };
+	//Lock
+	static bool lockOnTarget;
+	ImGui::Checkbox("Lock",&lockOnTarget);
+	
+	slider_position = (int)m_pStormTroopers->getTransform()->position.x;
+	if (ImGui::SliderInt("Enemy Location", &slider_position, 200.0f, 725.0f))
+	{
+		m_pStormTroopers->getTransform()->position.x = slider_position;
+	}
+
+	slider_speed = m_pThermalDetonator->getSpeed();
+	if (ImGui::SliderFloat("Velocity", &slider_speed, 50.0f, 500.0f))
+	{
+		m_pThermalDetonator->setSpeed(slider_speed);
+	}
+
+	slider_angle = m_pThermalDetonator->getAngle();
+	if (ImGui::SliderFloat("Angle", &slider_angle, 1.0f, 89.9f))
+	{
+		m_pThermalDetonator->setAngle(slider_angle);
+	}
+	
+	/*static float float3[3] = { 0.0f, 1.0f, 1.5f };
 	if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
 	{
 		std::cout << float3[0] << std::endl;
 		std::cout << float3[1] << std::endl;
 		std::cout << float3[2] << std::endl;
 		std::cout << "---------------------------\n";
-	}
+	}*/
 	
 	ImGui::End();
 	ImGui::EndFrame();
