@@ -17,6 +17,7 @@ static int slider_position;
 static float slider_speed;
 static float slider_angle;
 
+
 class PlayScene : public Scene
 {
 public:
@@ -29,7 +30,9 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-	//Modifiers - float
+
+	mutable bool m_locked;
+	void lockOnTarget();
 	
 private:
 	// IMGUI Function

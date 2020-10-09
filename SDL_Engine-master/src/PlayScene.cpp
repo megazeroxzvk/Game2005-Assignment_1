@@ -7,6 +7,7 @@
 #include "imgui.h"
 #include "imgui_sdl.h"
 #include "Renderer.h"
+#include "Util.h"
 
 PlayScene::PlayScene()
 {
@@ -30,14 +31,25 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
-	std::cout << "Distance Covered = " << m_pThermalDetonator->getDistance() << std::endl;
-	std::cout << "Time = " << m_pThermalDetonator->getTime() << std::endl;
+	/*std::cout << "Distance Covered = " << m_pThermalDetonator->getDistance() << std::endl;
+	std::cout << "Time = " << m_pThermalDetonator->getTime() << std::endl;*/
 	m_pSpeedLabel->setText("Y Velocity = " + std::to_string(fabs(m_pThermalDetonator->getRigidBody()->velocity.y)));
 	m_pAngleLabel->setText("Angle = " + std::to_string(m_pThermalDetonator->getAngle()));
 	m_pTimeLabel->setText("Time = " + std::to_string(m_pThermalDetonator->getTime()));
 	m_pDistanceLabel->setText("Distance = " + std::to_string(m_pThermalDetonator->getDistance()));
 	m_pEnemyLocationLabel->setText("Enemy Location = " + std::to_string(m_pStormTroopers->getTransform()->position.x));
 	m_pLandingPositionLabel->setText("Landing Location = " + std::to_string(m_pThermalDetonator->getLandingLocation()));
+
+	//if(m_locked)
+	//{
+	//	float landing_range = m_pStormTroopers->getTransform()->position.x - m_pThermalDetonator->getResetPositon().x;		//get R
+	//	//m_pThermalDetonator->setTime(m_pThermalDetonator->getAngle());			//get t
+	//	//R = V * cosOfTheta * t
+	//	//V = R/cosOfTheta * t
+	//	m_pThermalDetonator->setTime(m_pThermalDetonator->getAngle());
+	//	m_pThermalDetonator->setSpeed(landing_range / (cos(Util::Deg2Rad * m_pThermalDetonator->getAngle() * m_pThermalDetonator->getTime())));
+	//	std::cout << "speed = " << m_pThermalDetonator->getSpeed()<< std::endl;
+	//}
 }
 
 void PlayScene::clean()
@@ -212,8 +224,8 @@ void PlayScene::start()
 	addChild(m_pResetButton);
 
 	/* Instructions Label */
-	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
-	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
+	m_pInstructionsLabel = new Label("Press the backtick (`) for Physics Simulation Control", "Consolas");
+	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 575.0f);
 	addChild(m_pInstructionsLabel);
 
 	m_pSpeedLabel = new Label("", "digi",20,{0,0,0,255});
@@ -228,7 +240,7 @@ void PlayScene::start()
 	m_pTimeLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.55f, 60.0f);
 	addChild(m_pTimeLabel);
 
-	m_pLandingPositionLabel = new Label("", "digi", 20, { 0,0,0,255 });
+	m_pLandingPositionLabel = new Label("", "digi", 20, { 150,0,0,255 });
 	m_pLandingPositionLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f, 60.0f);
 	addChild(m_pLandingPositionLabel);
 
@@ -241,6 +253,12 @@ void PlayScene::start()
 	addChild(m_pDistanceLabel);
 }
 
+void PlayScene::lockOnTarget()
+{
+
+	
+}
+
 void PlayScene::GUI_Function() const
 {
 	// Always open with a NewFrame
@@ -251,16 +269,20 @@ void PlayScene::GUI_Function() const
 	
 	ImGui::Begin("Physics Simulation Modifiers", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
-	if(ImGui::Button("My Button"))
-	{
-		std::cout << "My Button Pressed" << std::endl;
-	}
+	//if(ImGui::Button("My Button"))
+	//{
+	//	std::cout << "My Button Pressed" << std::endl;
+	//}
 
-	ImGui::Separator();
+	//ImGui::Separator();
 
 	//Lock
-	static bool lockOnTarget;
-	ImGui::Checkbox("Lock",&lockOnTarget);
+	/*static bool lockOnTarget;
+	if(ImGui::Checkbox("Lock (first set angle!)",&lockOnTarget))
+	{
+		m_locked = lockOnTarget;
+	}*/
+	
 	
 	slider_position = (int)m_pStormTroopers->getTransform()->position.x;
 	if (ImGui::SliderInt("Enemy Location", &slider_position, 200.0f, 725.0f))
@@ -274,11 +296,14 @@ void PlayScene::GUI_Function() const
 		m_pThermalDetonator->setSpeed(slider_speed);
 	}
 
-	slider_angle = m_pThermalDetonator->getAngle();
-	if (ImGui::SliderFloat("Angle", &slider_angle, 1.0f, 89.9f))
-	{
-		m_pThermalDetonator->setAngle(slider_angle);
-	}
+	//if(!m_locked)
+	//{
+		slider_angle = m_pThermalDetonator->getAngle();
+		if (ImGui::SliderFloat("Angle", &slider_angle, 1.0f, 89.9f))
+		{
+			m_pThermalDetonator->setAngle(slider_angle);
+		}
+	/*}*/
 	
 	/*static float float3[3] = { 0.0f, 1.0f, 1.5f };
 	if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))

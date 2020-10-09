@@ -65,6 +65,13 @@ void ThermalDetonator::setSpeed(float speed)
 	getRigidBody()->velocity.y = -speed * sin(m_angle);
 }
 
+
+void ThermalDetonator::setTime(float angle)
+{
+	m_time = ((2.0 * m_speed * sin(Util::Deg2Rad * angle)) / gravity.y);
+}
+
+
 void ThermalDetonator::setPosition(glm::vec2 position)
 {
 	getTransform()->position = position;
@@ -108,6 +115,8 @@ float ThermalDetonator::getTime()
 	m_landingLocation = (m_speed * cos(m_angle) * m_time) + m_initialPosition;
 	return m_time;
 }
+
+
 
 float ThermalDetonator::getLandingLocation()
 {

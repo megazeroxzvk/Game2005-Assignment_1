@@ -32,6 +32,7 @@ public:
 
 	//oh damn, forgot the one factor that cannot be taken back :)
 	float getTime();
+	void setTime(float angle);
 	float getLandingLocation();
 	bool m_kickoff = false;
 
