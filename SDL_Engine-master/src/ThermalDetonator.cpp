@@ -108,7 +108,7 @@ void ThermalDetonator::update()
 		
 		//replace 9.81 with gravity factor.
 		getRigidBody()->velocity.y += gravity * deltaTime;
-		getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * deltaTime;
+		//getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * deltaTime;
 		position.y += getRigidBody()->velocity.y * deltaTime;
 		position.x += getRigidBody()->velocity.x * deltaTime;
 		getTransform()->position = position;

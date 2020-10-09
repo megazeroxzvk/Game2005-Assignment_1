@@ -52,6 +52,7 @@ private:
 	Label* m_pSpeed;
 	Label* m_pRange;
 	Label* m_pTimeRequired;
+	Label* m_pPositionLabel;
 
 	// Background
 	Background* m_pBackground;

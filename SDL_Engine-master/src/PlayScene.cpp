@@ -29,6 +29,8 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	m_pPositionLabel->setText("Position = ");
 }
 
 void PlayScene::clean()
