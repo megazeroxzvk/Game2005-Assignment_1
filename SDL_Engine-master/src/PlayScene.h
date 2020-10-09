@@ -13,10 +13,6 @@
 #include "ThermalDetonator.h"
 #include "StormTroopers.h"
 
-static int slider_position;
-static float slider_speed;
-static float slider_angle;
-
 class PlayScene : public Scene
 {
 public:
@@ -29,8 +25,6 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-	//Modifiers - float
-	
 private:
 	// IMGUI Function
 	void GUI_Function() const;
@@ -52,15 +46,13 @@ private:
 	Button* m_pResetButton;
 	Label* m_pInstructionsLabel;
 
-	//Status Labels
-	Label* m_pSpeedLabel;
-	Label* m_pAngleLabel;
-	Label* m_pTimeLabel;
-	Label* m_pLandingPositionLabel;
-	Label* m_pEnemyLocationLabel;
-	Label* m_pDistanceLabel;
-
-	
+	//Labels for showing current information-
+	Label* m_pStormTroopersLocation;
+	Label* m_pAngle;
+	Label* m_pSpeed;
+	Label* m_pRange;
+	Label* m_pTimeRequired;
+	Label* m_pPositionLabel;
 
 	float checkDistance(GameObject* pGameObject);
 

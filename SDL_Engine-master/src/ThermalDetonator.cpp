@@ -16,19 +16,13 @@ ThermalDetonator::ThermalDetonator()
 	setHeight(size.y);
 
 	//Flat Surface y AXIS = 500 !
-	getTransform()->position = glm::vec2(90.0f, 500.0f);
+	getTransform()->position = glm::vec2(90, 500.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->acceleration = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
 
-	//initial
-	m_initialPosition = 90.0f;
+	m_angle = 0;
 
-	//reset
-	m_resetPosition = glm::vec2(90.0f, 500.0f);
-	m_resetAngle = 15.88963282f;
-	m_resetSpeed = 95.0f;
-	
 	setType(PLAYER);
 
 }
@@ -57,61 +51,27 @@ void ThermalDetonator::setAngle(float angle)
 void ThermalDetonator::setSpeed(float speed)
 {
 	this->m_speed = speed;
-
-	//Setting Initial Velocity as soon as this function is run.
-	//Vx = VcosOfTheta, Vy = VsinOfTheta
 	getRigidBody()->velocity.x = speed * cos(m_angle);
 	//SDL throwing upwards is actually is reducing y-axis value.
 	getRigidBody()->velocity.y = -speed * sin(m_angle);
 }
 
-void ThermalDetonator::setPosition(glm::vec2 position)
-{
-	getTransform()->position = position;
-}
-
 float ThermalDetonator::getDistance()
 {
-	//pending - done
-	m_distance = getTransform()->position.x - m_initialPosition;
+	//pending
 	return m_distance;
 }
 
 float ThermalDetonator::getAngle()
 {
-	return Util::Rad2Deg * m_angle;
+	//pending
+	return m_angle;
 }
 
 float ThermalDetonator::getSpeed()
 {
+	//pending
 	return m_speed;
-}
-
-glm::vec2 ThermalDetonator::getResetPositon()
-{
-	return m_resetPosition;
-}
-
-float ThermalDetonator::getResetAngle()
-{
-	return m_resetAngle;
-}
-
-float ThermalDetonator::getResetSpeed()
-{
-	return m_resetSpeed;
-}
-
-float ThermalDetonator::getTime()
-{
-	m_time = ((2.0 * m_speed * sin(m_angle))/gravity.y);
-	m_landingLocation = (m_speed * cos(m_angle) * m_time) + m_initialPosition;
-	return m_time;
-}
-
-float ThermalDetonator::getLandingLocation()
-{
-	return m_landingLocation;
 }
 
 void ThermalDetonator::draw()
@@ -133,24 +93,26 @@ void ThermalDetonator::update()
 	//the acceleration and deceleration that the object gets.
 	//Hence the detonator lands at the stormtroopers the landing velocity is equal to the starting velocity
 	//And when it lands, booom!
-	if(m_kickoff)
-	{
-		if (getRigidBody()->velocity.y > m_speed * sin(m_angle))
-		{
 
-			//time to stop.
-			//getRigidBody()->velocity = { 0,0 };
-			m_kickoff = false;
-		}
-		else
-		{
-			//std::cout << "speed.y = " << getRigidBody()->velocity.y << std::endl;
-			// better way to do?? - yup, found the better way to do.
-			//replaced 9.81 with gravity factor.
-			getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * deltaTime;
-			getTransform()->position += getRigidBody()->velocity * deltaTime;
-		}
+	if (getRigidBody()->velocity.y > m_speed * sin(m_angle))
+	{
+		//time to stop.
+		position = { 0,0 };
 	}
-	
+	else
+	{
+		position = getTransform()->position;
+		std::cout << "speed.y = " << getRigidBody()->velocity.y << std::endl;
+
+		// better way to do??
+		
+		//replace 9.81 with gravity factor.
+		getRigidBody()->velocity.y += gravity * deltaTime;
+		//getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * deltaTime;
+		position.y += getRigidBody()->velocity.y * deltaTime;
+		position.x += getRigidBody()->velocity.x * deltaTime;
+		getTransform()->position = position;
+	}
+
 }
 

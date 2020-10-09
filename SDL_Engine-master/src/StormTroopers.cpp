@@ -20,8 +20,6 @@ StormTroopers::StormTroopers()
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
 
-	m_resetPosition = 575;
-	
 	setType(TARGET);
 }
 
@@ -50,10 +48,5 @@ void StormTroopers::draw()
 void StormTroopers::clean()
 {
 	
-}
-
-float StormTroopers::getResetPosition()
-{
-	return m_resetPosition;
 }
 
