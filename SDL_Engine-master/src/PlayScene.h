@@ -62,6 +62,9 @@ private:
 
 	
 
+	float checkDistance(GameObject* pGameObject);
+
+
 	// Background
 	Background* m_pBackground;
 };
