@@ -54,6 +54,9 @@ private:
 	Label* m_pTimeRequired;
 	Label* m_pPositionLabel;
 
+	float checkDistance(GameObject* pGameObject);
+
+
 	// Background
 	Background* m_pBackground;
 };
