@@ -33,12 +33,12 @@ void PlayScene::update()
 	updateDisplayList();
 	/*std::cout << "Distance Covered = " << m_pThermalDetonator->getDistance() << std::endl;
 	std::cout << "Time = " << m_pThermalDetonator->getTime() << std::endl;*/
-	m_pSpeedLabel->setText("Y Velocity = " + std::to_string(fabs(m_pThermalDetonator->getRigidBody()->velocity.y)));
-	m_pAngleLabel->setText("Angle = " + std::to_string(m_pThermalDetonator->getAngle()));
-	m_pTimeLabel->setText("Time = " + std::to_string(m_pThermalDetonator->getTime()));
-	m_pDistanceLabel->setText("Distance = " + std::to_string(m_pThermalDetonator->getDistance()));
-	m_pEnemyLocationLabel->setText("Enemy Location = " + std::to_string(m_pStormTroopers->getTransform()->position.x));
-	m_pLandingPositionLabel->setText("Landing Location = " + std::to_string(m_pThermalDetonator->getLandingLocation()));
+	m_pSpeedLabel->setText("Y Velocity = " + std::to_string(fabs(m_pThermalDetonator->getRigidBody()->velocity.y)) + " m");
+	m_pAngleLabel->setText("Angle = " + std::to_string(m_pThermalDetonator->getAngle()) + " deg");
+	m_pTimeLabel->setText("Time = " + std::to_string(m_pThermalDetonator->getTime()) + " sec");
+	m_pDistanceLabel->setText("Distance = " + std::to_string(m_pThermalDetonator->getDistance()) + " m");
+	m_pEnemyLocationLabel->setText("Enemy Location(x) = " + std::to_string(m_pStormTroopers->getTransform()->position.x));
+	m_pLandingPositionLabel->setText("Landing Location(x) = " + std::to_string(m_pThermalDetonator->getLandingLocation()));
 
 	//if(m_locked)
 	//{
